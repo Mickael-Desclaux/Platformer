@@ -4,15 +4,19 @@ using UnityEngine.InputSystem;
 
 namespace MPlayer
 {
+    [RequireComponent(typeof(SpriteRenderer), typeof(Rigidbody2D))]
     public class Player : MonoBehaviour
     {
-        [SerializeField] private float _speed = 1;
+        [SerializeField] private float _speed = 1f;
+        [SerializeField] private float _jumpForce = 10f;
         private Vector2 _direction;
         private SpriteRenderer _spriteRenderer;
+        private Rigidbody2D _rigidbody2D;
 
         private void Awake()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
+            _rigidbody2D = GetComponent<Rigidbody2D>();
         }
         
         private void FixedUpdate()
@@ -42,7 +46,7 @@ namespace MPlayer
         [UsedImplicitly]
         private void OnJumpPerformed(InputAction.CallbackContext context)
         {
-            Debug.Log("Jump");
+            _rigidbody2D.AddForceY(_jumpForce, ForceMode2D.Impulse);
         }
     }
 }
