@@ -1,4 +1,3 @@
-using System;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,6 +14,17 @@ namespace MPlayer
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
         }
+        
+        private void FixedUpdate()
+        {
+            if (_direction == Vector2.zero)
+            {
+                return;
+            }
+
+            Vector3 direction = new Vector3(_direction.x, 0, 0);
+            transform.position += direction * _speed;
+        }
 
         [UsedImplicitly]
         private void OnMovePerformed(InputAction.CallbackContext context)
@@ -29,15 +39,10 @@ namespace MPlayer
             _direction = Vector2.zero;
         }
 
-        private void FixedUpdate()
+        [UsedImplicitly]
+        private void OnJumpPerformed(InputAction.CallbackContext context)
         {
-            if (_direction == Vector2.zero)
-            {
-                return;
-            }
-
-            Vector3 direction = new Vector3(_direction.x, 0, 0);
-            transform.position += direction * _speed;
+            Debug.Log("Jump");
         }
     }
 }
