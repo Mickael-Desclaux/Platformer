@@ -3,7 +3,8 @@
     "rootNamespace": "MPlayer",
     "references": [
         "GUID:5f23a0b79a7770745b64dd638b255b3e",
-        "GUID:75469ad4d38634e559750d17036d5f7c"
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:56786261a6a2d5e44b864c88f1751e74"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
