@@ -1,3 +1,4 @@
+using System;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,9 +11,13 @@ namespace MPlayer
     {
         [SerializeField] private float _speed = 1f;
         [SerializeField] private float _jumpForce = 10f;
+        [SerializeField] private LayerMask _groundLayerMask;
+        [SerializeField] private float _groundRadius = 0.2f;
+        [SerializeField] private Transform _playerFeet;
         private Vector2 _direction;
         private SpriteRenderer _spriteRenderer;
         private Rigidbody2D _rigidbody2D;
+        private bool _isGrounded;
 
         private void Awake()
         {
@@ -22,6 +27,8 @@ namespace MPlayer
         
         private void FixedUpdate()
         {
+            _isGrounded = Physics2D.OverlapCircle(_playerFeet.position, _groundRadius, _groundLayerMask);
+            
             if (_direction == Vector2.zero)
             {
                 return;
@@ -53,7 +60,23 @@ namespace MPlayer
         [UsedImplicitly]
         private void OnJumpPerformed(InputAction.CallbackContext context)
         {
-            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _jumpForce);
+            if (_isGrounded)
+            {
+                _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _jumpForce);
+            }
         }
+
+
+
+
+        #region Debug
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = _isGrounded ? Color.green : Color.red;
+            Gizmos.DrawWireSphere(_playerFeet.position, _groundRadius);
+        }
+
+        #endregion
     }
 }

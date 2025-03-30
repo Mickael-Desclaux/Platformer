@@ -34,6 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4226818493204012269}
+  - {fileID: 153541665199968078}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8411839633899353968
@@ -105,6 +106,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 0.1
   _jumpForce: 15
+  _groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _groundRadius: 0.4
+  _playerFeet: {fileID: 153541665199968078}
 --- !u!50 &8990742083629007957
 Rigidbody2D:
   serializedVersion: 5
@@ -351,3 +357,34 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
   _sendMessageToParent: 1
+--- !u!1 &8255531423495406514
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 153541665199968078}
+  m_Layer: 0
+  m_Name: Feet
+  m_TagString: Untagged
+  m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &153541665199968078
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8255531423495406514}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.344, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 5263170846919816109}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
