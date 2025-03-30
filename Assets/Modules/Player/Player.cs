@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
+#pragma warning disable CS0618 // Type or member is obsolete
 
 namespace MPlayer
 {
@@ -28,6 +29,11 @@ namespace MPlayer
 
             Vector3 direction = new Vector3(_direction.x, 0, 0);
             transform.position += direction * _speed;
+            
+            if (_direction != Vector2.zero)
+            {
+                _rigidbody2D.velocity = new Vector2(_direction.x * _speed, _rigidbody2D.velocity.y);
+            }
         }
 
         [UsedImplicitly]
@@ -41,12 +47,13 @@ namespace MPlayer
         private void OnMoveCanceled(InputAction.CallbackContext context)
         {
             _direction = Vector2.zero;
+            _rigidbody2D.velocity = new Vector2(0, _rigidbody2D.velocity.y);
         }
 
         [UsedImplicitly]
         private void OnJumpPerformed(InputAction.CallbackContext context)
         {
-            _rigidbody2D.AddForceY(_jumpForce, ForceMode2D.Impulse);
+            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _jumpForce);
         }
     }
 }
