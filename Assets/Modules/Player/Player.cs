@@ -2,7 +2,6 @@ using System;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 #pragma warning disable CS0618 // Type or member is obsolete
 
@@ -14,6 +13,7 @@ namespace MPlayer
         #region To Remove
 
         public event Action<Vector2> Moved;
+        public event Action Jumped;
 
         #endregion
         
@@ -21,11 +21,14 @@ namespace MPlayer
         public float Speed => _speed;
         
         [SerializeField] private float _jumpForce = 10f;
+        public float JumpForce => _jumpForce;
+        
+        public Vector2 Direction { get; set; }
+        public bool IsGrounded { get; set; }
+        
         [SerializeField] private LayerMask _groundLayerMask;
         [SerializeField] private float _groundRadius = 0.2f;
         [SerializeField] private Transform _playerFeet;
-        private bool _isGrounded;
-        private bool _hasJumped;
 
         public PlayerStateMachine StateMachine { get; private set; }
         public SpriteRenderer SpriteRenderer { get; private set; }
@@ -46,7 +49,7 @@ namespace MPlayer
 
         private void FixedUpdate()
         {
-            _isGrounded = Physics2D.OverlapCircle(_playerFeet.position, _groundRadius, _groundLayerMask);
+            IsGrounded = Physics2D.OverlapCircle(_playerFeet.position, _groundRadius, _groundLayerMask);
             
             StateMachine.Execute();
         }
@@ -66,31 +69,14 @@ namespace MPlayer
         [UsedImplicitly]
         private void OnJumpPerformed(InputAction.CallbackContext context)
         {
-            if (_isGrounded)
-            {
-                Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, _jumpForce);
-                
-                _hasJumped = true;
-                
-                return;
-            }
-            
-            if (_hasJumped == true)
-            {
-                Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, _jumpForce);
-                _hasJumped = false;
-            }
-            
+            Jumped?.Invoke();
         }
-
-
-
-
+        
         #region Debug
 
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = _isGrounded ? Color.green : Color.red;
+            Gizmos.color = IsGrounded ? Color.green : Color.red;
             Gizmos.DrawWireSphere(_playerFeet.position, _groundRadius);
         }
 

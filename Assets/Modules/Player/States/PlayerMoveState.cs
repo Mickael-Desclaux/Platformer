@@ -6,38 +6,37 @@ namespace MPlayer
 {
     public class PlayerMoveState : FSMState<Player>
     {
-        private Vector2 _direction;
-
-        public PlayerMoveState(Player context, Vector2 currentDirection) : base(context)
+        public PlayerMoveState(Player context) : base(context)
         {
-            _direction = currentDirection;
         }
         
         public override void Enter()
         {
             Context.Moved += OnMoved;
+            Context.Jumped += OnJumped;
             ReverseSprite();
         }
 
         public override void Execute()
         {
-            if (_direction == Vector2.zero)
+            if (Context.Direction == Vector2.zero)
             {
                 return;
             }
 
-            Vector3 direction = new Vector3(_direction.x, 0, 0);
+            Vector3 direction = new Vector3(Context.Direction.x, 0, 0);
             Context.transform.position += direction * Context.Speed;
             
-            if (_direction != Vector2.zero)
+            if (Context.Direction != Vector2.zero)
             {
-                Context.Rigidbody2D.velocity = new Vector2(_direction.x * Context.Speed, Context.Rigidbody2D.velocity.y);
+                Context.Rigidbody2D.velocity = new Vector2(Context.Direction.x * Context.Speed, Context.Rigidbody2D.velocity.y);
             }
         }
 
         public override void Exit()
         {
             Context.Moved -= OnMoved;
+            Context.Jumped -= OnJumped;
         }
 
         private void OnMoved(Vector2 direction)
@@ -49,13 +48,21 @@ namespace MPlayer
                 return;
             }
             
-            _direction = direction;
+            Context.Direction = direction;
             ReverseSprite();
         }
 
         private void ReverseSprite()
         {
-            Context.SpriteRenderer.flipX = _direction.x < 0;
+            Context.SpriteRenderer.flipX = Context.Direction.x < 0;
+        }
+        
+        private void OnJumped()
+        {
+            if (Context.IsGrounded)
+            {
+                Context.StateMachine.SetState(new PlayerJumpState(Context));
+            }
         }
     }
 }
