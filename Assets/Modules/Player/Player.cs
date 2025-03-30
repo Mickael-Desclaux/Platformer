@@ -1,4 +1,3 @@
-using System;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,6 +17,7 @@ namespace MPlayer
         private SpriteRenderer _spriteRenderer;
         private Rigidbody2D _rigidbody2D;
         private bool _isGrounded;
+        private bool _hasJumped;
 
         private void Awake()
         {
@@ -60,9 +60,18 @@ namespace MPlayer
         [UsedImplicitly]
         private void OnJumpPerformed(InputAction.CallbackContext context)
         {
+            if (_hasJumped == true)
+            {
+                _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _jumpForce);
+                _hasJumped = false;
+                return;
+            }
+            
             if (_isGrounded)
             {
                 _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _jumpForce);
+                
+                _hasJumped = true;
             }
         }
 
