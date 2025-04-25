@@ -7,7 +7,9 @@ namespace MInputsStore
     {
         public InputsStore()
         {
-            States.Add(new MoveState(Vector2.zero));
+            States
+                .Add(new MoveState(Vector2.zero))
+                .Add(new JumpState(0f));
         }
     }
 }

@@ -14,13 +14,13 @@ namespace MPlayer
         public override void Enter()
         {
             InputsStoreSingleton.Instance.Subscribe<MoveState>(OnMoved);
-            Context.Jumped += OnJumped;
+            InputsStoreSingleton.Instance.Subscribe<JumpState>(OnJumped);
         }
 
         public override void Exit()
         {
             InputsStoreSingleton.Instance.Unsubscribe<MoveState>(OnMoved);
-            Context.Jumped -= OnJumped;
+            InputsStoreSingleton.Instance.Unsubscribe<JumpState>(OnJumped);
         }
 
         private void OnMoved(MoveState state)
@@ -35,7 +35,7 @@ namespace MPlayer
             Context.StateMachine.SetState(new PlayerMoveState(Context));
         }
 
-        private void OnJumped()
+        private void OnJumped(JumpState state)
         {
             if (Context.IsGrounded)
             {

@@ -294,7 +294,7 @@ MonoBehaviour:
       m_Action: Input
       m_Flags: 8
     m_Flags: 0
-  _sendMessageToParent: 1
+  _sendMessageToParent: 0
 --- !u!1 &6296247847402980539
 GameObject:
   m_ObjectHideFlags: 0

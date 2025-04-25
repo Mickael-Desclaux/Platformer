@@ -14,7 +14,7 @@ namespace MPlayer
         public override void Enter()
         {
             InputsStoreSingleton.Instance.Subscribe<MoveState>(OnMoved);
-            Context.Jumped += OnJumped;
+            InputsStoreSingleton.Instance.Subscribe<JumpState>(OnJumped);
             ReverseSprite();
         }
 
@@ -37,7 +37,7 @@ namespace MPlayer
         public override void Exit()
         {
             InputsStoreSingleton.Instance.Unsubscribe<MoveState>(OnMoved);
-            Context.Jumped -= OnJumped;
+            InputsStoreSingleton.Instance.Unsubscribe<JumpState>(OnJumped);
         }
 
         private void OnMoved(MoveState state)
@@ -52,18 +52,18 @@ namespace MPlayer
             Context.Direction = state.Direction;
             ReverseSprite();
         }
-
-        private void ReverseSprite()
-        {
-            Context.SpriteRenderer.flipX = Context.Direction.x < 0;
-        }
         
-        private void OnJumped()
+        private void OnJumped(JumpState state)
         {
             if (Context.IsGrounded)
             {
                 Context.StateMachine.SetState(new PlayerJumpState(Context));
             }
+        }
+
+        private void ReverseSprite()
+        {
+            Context.SpriteRenderer.flipX = Context.Direction.x < 0;
         }
     }
 }

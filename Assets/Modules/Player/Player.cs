@@ -1,7 +1,4 @@
-using System;
-using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 #pragma warning disable CS0618 // Type or member is obsolete
 
@@ -10,12 +7,6 @@ namespace MPlayer
     [RequireComponent(typeof(SpriteRenderer), typeof(Rigidbody2D))]
     public class Player : MonoBehaviour
     {
-        #region To Remove
-        
-        public event Action Jumped;
-
-        #endregion
-        
         [SerializeField] private float _speed = 1f;
         public float Speed => _speed;
         
@@ -36,7 +27,6 @@ namespace MPlayer
         private void Awake()
         {
             StateMachine = new PlayerStateMachine();
-            StateMachine.Debug = true;
             SpriteRenderer = GetComponent<SpriteRenderer>();
             Rigidbody2D = GetComponent<Rigidbody2D>();
         }
@@ -51,12 +41,6 @@ namespace MPlayer
             IsGrounded = Physics2D.OverlapCircle(_playerFeet.position, _groundRadius, _groundLayerMask);
             
             StateMachine.Execute();
-        }
-
-        [UsedImplicitly]
-        private void OnJumpPerformed(InputAction.CallbackContext context)
-        {
-            Jumped?.Invoke();
         }
         
         #region Debug
