@@ -25,9 +25,9 @@ namespace MPlayer
 
         private void OnMoved(MoveState state)
         {
-            Context.Direction = state.Move;
+            Context.Direction = state.Direction;
 
-            if (state.Move == Vector2.zero)
+            if (state.Direction == Vector2.zero)
             {
                 return;
             }

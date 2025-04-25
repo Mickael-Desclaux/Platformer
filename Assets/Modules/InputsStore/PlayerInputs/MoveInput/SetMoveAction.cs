@@ -5,16 +5,16 @@ namespace MInputsStore
 {
     public record SetMoveAction : ImmutableAction<MoveState>
     {
-        public readonly Vector2 Move;
+        private readonly Vector2 _direction;
 
-        public SetMoveAction(Vector2 move)
+        public SetMoveAction(Vector2 direction)
         {
-            Move = move;
+            _direction = direction;
         }
         
         public override MoveState Reduce(MoveState state)
         {
-            return new MoveState(Move);
+            return new MoveState(_direction);
         }
     }
 }

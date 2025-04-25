@@ -5,11 +5,11 @@ namespace MInputsStore
 {
     public record MoveState : ImmutableState
     {
-        public readonly Vector2 Move;
+        public readonly Vector2 Direction;
 
-        public MoveState(Vector2 move)
+        public MoveState(Vector2 direction)
         {
-            Move = move;
+            Direction = direction;
         }
     }
 }

@@ -42,14 +42,14 @@ namespace MPlayer
 
         private void OnMoved(MoveState state)
         {
-            if (state.Move == Vector2.zero)
+            if (state.Direction == Vector2.zero)
             {
                 Context.Rigidbody2D.velocity = new Vector2(0, Context.Rigidbody2D.velocity.y);
                 Context.StateMachine.SetState(new PlayerIdleState(Context));
                 return;
             }
             
-            Context.Direction = state.Move;
+            Context.Direction = state.Direction;
             ReverseSprite();
         }
 
