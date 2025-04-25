@@ -1,4 +1,5 @@
 using MGA.FSM;
+using MInputsStore;
 using UnityEngine;
 
 namespace MPlayer
@@ -12,21 +13,21 @@ namespace MPlayer
 
         public override void Enter()
         {
-            Context.Moved += OnMoved;
+            InputsStoreSingleton.Instance.Subscribe<MoveState>(OnMoved);
             Context.Jumped += OnJumped;
         }
 
         public override void Exit()
         {
-            Context.Moved -= OnMoved;
+            InputsStoreSingleton.Instance.Unsubscribe<MoveState>(OnMoved);
             Context.Jumped -= OnJumped;
         }
 
-        private void OnMoved(Vector2 direction)
+        private void OnMoved(MoveState state)
         {
-            Context.Direction = direction;
+            Context.Direction = state.Move;
 
-            if (direction == Vector2.zero)
+            if (state.Move == Vector2.zero)
             {
                 return;
             }

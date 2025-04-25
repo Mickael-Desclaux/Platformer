@@ -11,8 +11,7 @@ namespace MPlayer
     public class Player : MonoBehaviour
     {
         #region To Remove
-
-        public event Action<Vector2> Moved;
+        
         public event Action Jumped;
 
         #endregion
@@ -52,18 +51,6 @@ namespace MPlayer
             IsGrounded = Physics2D.OverlapCircle(_playerFeet.position, _groundRadius, _groundLayerMask);
             
             StateMachine.Execute();
-        }
-
-        [UsedImplicitly]
-        private void OnMovePerformed(InputAction.CallbackContext context)
-        {
-            Moved?.Invoke(context.ReadValue<Vector2>());
-        }
-        
-        [UsedImplicitly]
-        private void OnMoveCanceled(InputAction.CallbackContext context)
-        {
-            Moved?.Invoke(Vector2.zero);
         }
 
         [UsedImplicitly]

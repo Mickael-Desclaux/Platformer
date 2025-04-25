@@ -1,4 +1,5 @@
 using MGA.FSM;
+using MInputsStore;
 using UnityEngine;
 #pragma warning disable CS0618 // Type or member is obsolete
 
@@ -12,7 +13,7 @@ namespace MPlayer
         
         public override void Enter()
         {
-            Context.Moved += OnMoved;
+            InputsStoreSingleton.Instance.Subscribe<MoveState>(OnMoved);
             Context.Jumped += OnJumped;
             ReverseSprite();
         }
@@ -35,20 +36,20 @@ namespace MPlayer
 
         public override void Exit()
         {
-            Context.Moved -= OnMoved;
+            InputsStoreSingleton.Instance.Unsubscribe<MoveState>(OnMoved);
             Context.Jumped -= OnJumped;
         }
 
-        private void OnMoved(Vector2 direction)
+        private void OnMoved(MoveState state)
         {
-            if (direction == Vector2.zero)
+            if (state.Move == Vector2.zero)
             {
                 Context.Rigidbody2D.velocity = new Vector2(0, Context.Rigidbody2D.velocity.y);
                 Context.StateMachine.SetState(new PlayerIdleState(Context));
                 return;
             }
             
-            Context.Direction = direction;
+            Context.Direction = state.Move;
             ReverseSprite();
         }
 
