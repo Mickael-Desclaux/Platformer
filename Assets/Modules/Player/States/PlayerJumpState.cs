@@ -1,4 +1,5 @@
 using MGA.FSM;
+using MInputsStore;
 using UnityEngine;
 #pragma warning disable CS0618 // Type or member is obsolete
 
@@ -45,7 +46,8 @@ namespace MPlayer
         
         private void Jump()
         {
-            Context.Rigidbody2D.velocity = new Vector2(Context.Rigidbody2D.velocity.x, Context.JumpForce);
+            JumpState state = InputsStoreSingleton.Instance.GetState<JumpState>();
+            Context.Rigidbody2D.velocity = new Vector2(Context.Rigidbody2D.velocity.x, state.Force);
             _hasJumped = true;
         }
     }

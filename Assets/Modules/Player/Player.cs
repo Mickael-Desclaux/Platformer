@@ -10,9 +10,6 @@ namespace MPlayer
         [SerializeField] private float _speed = 1f;
         public float Speed => _speed;
         
-        [SerializeField] private float _jumpForce = 10f;
-        public float JumpForce => _jumpForce;
-        
         public Vector2 Direction { get; set; }
         public bool IsGrounded { get; set; }
         

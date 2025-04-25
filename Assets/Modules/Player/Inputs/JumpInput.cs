@@ -8,7 +8,7 @@ namespace MPlayer
     {
         protected override void OnPerformed(InputAction.CallbackContext context)
         {
-            SetJumpAction action = new SetJumpAction(10f);
+            SetJumpAction action = new SetJumpAction(15f);
             InputsStoreSingleton.Instance.Dispatch(action);
         }
     }
