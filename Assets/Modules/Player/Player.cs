@@ -1,3 +1,6 @@
+using MGA.UniJect;
+using MUIStore;
+using MUIStore.State;
 using UnityEngine;
 
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -31,6 +34,17 @@ namespace MPlayer
         private void Start()
         {
             StateMachine.SetState(new PlayerIdleState(this));
+
+            _uiStore1.Subscribe<TestUIState>(OnUIStateChange);
+            _uiStore2.Subscribe<TestUIState>(OnUIStateChange);
+            
+            _uiStore1.Dispatch(new TestUIIncrementAction());
+            _uiStore2.Dispatch(new TestUIIncrementAction());
+        }
+
+        private void OnUIStateChange(TestUIState obj)
+        {
+            Debug.Log(obj.Count);
         }
 
         private void FixedUpdate()
@@ -47,6 +61,9 @@ namespace MPlayer
             Gizmos.color = IsGrounded ? Color.green : Color.red;
             Gizmos.DrawWireSphere(_playerFeet.position, _groundRadius);
         }
+        
+        [Inject] private UIStore _uiStore1;
+        [Inject] private UIStore _uiStore2;
 
         #endregion
     }
