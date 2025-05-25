@@ -8,6 +8,8 @@ namespace MPlayer
     public class PlayerJumpState : FSMState<Player>
     {
         private bool _hasJumped;
+        private const float _afterJumpDelay = 0.1f;
+        private float _afterJumpTimeElapsed;
         
         public PlayerJumpState(Player context) : base(context)
         {
@@ -21,6 +23,13 @@ namespace MPlayer
 
         public override void Execute()
         {
+            _afterJumpTimeElapsed += Time.fixedDeltaTime;
+            
+            if (_afterJumpTimeElapsed < _afterJumpDelay)
+            {
+                return;
+            }
+            
             if (Context.IsGrounded && _hasJumped)
             {
                 _hasJumped = false;
@@ -46,6 +55,7 @@ namespace MPlayer
         
         private void Jump()
         {
+            _afterJumpTimeElapsed = 0f;
             JumpState state = InputsStoreSingleton.Instance.GetState<JumpState>();
             Context.Rigidbody2D.velocity = new Vector2(Context.Rigidbody2D.velocity.x, state.Force);
             _hasJumped = true;
