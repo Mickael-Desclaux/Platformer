@@ -20,17 +20,19 @@ namespace MPlayer
 
         public override void Execute()
         {
-            if (Context.Direction == Vector2.zero)
+            MoveState moveState = InputsStoreSingleton.Instance.GetState<MoveState>();
+            
+            if (moveState.Direction == Vector2.zero)
             {
                 return;
             }
 
-            Vector3 direction = new Vector3(Context.Direction.x, 0, 0);
+            Vector3 direction = new Vector3(moveState.Direction.x, 0, 0);
             Context.transform.position += direction * Context.Speed;
             
-            if (Context.Direction != Vector2.zero)
+            if (moveState.Direction != Vector2.zero)
             {
-                Context.Rigidbody2D.velocity = new Vector2(Context.Direction.x * Context.Speed, Context.Rigidbody2D.velocity.y);
+                Context.Rigidbody2D.velocity = new Vector2(moveState.Direction.x * Context.Speed, Context.Rigidbody2D.velocity.y);
             }
         }
 
@@ -49,7 +51,6 @@ namespace MPlayer
                 return;
             }
             
-            Context.Direction = state.Direction;
             ReverseSprite();
         }
         
@@ -63,7 +64,8 @@ namespace MPlayer
 
         private void ReverseSprite()
         {
-            Context.SpriteRenderer.flipX = Context.Direction.x < 0;
+            MoveState moveState = InputsStoreSingleton.Instance.GetState<MoveState>();
+            Context.SpriteRenderer.flipX = moveState.Direction.x < 0;
         }
     }
 }

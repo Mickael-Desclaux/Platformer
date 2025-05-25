@@ -23,6 +23,7 @@ namespace MPlayer
 
         public override void Execute()
         {
+            MoveState moveState = InputsStoreSingleton.Instance.GetState<MoveState>();
             _afterJumpTimeElapsed += Time.fixedDeltaTime;
             
             if (_afterJumpTimeElapsed < _afterJumpDelay)
@@ -37,7 +38,9 @@ namespace MPlayer
             
             if (Context.IsGrounded && !_hasJumped)
             {
-                if (Context.Direction != Vector2.zero)
+                Debug.Log(moveState.Direction);
+                
+                if (moveState.Direction != Vector2.zero)
                 {
                     Context.StateMachine.SetState(new PlayerMoveState(Context));
                 }

@@ -10,7 +10,6 @@ namespace MPlayer
         [SerializeField] private float _speed = 1f;
         public float Speed => _speed;
         
-        public Vector2 Direction { get; set; }
         public bool IsGrounded { get; set; }
         
         [SerializeField] private LayerMask _groundLayerMask;
@@ -24,6 +23,7 @@ namespace MPlayer
         private void Awake()
         {
             StateMachine = new PlayerStateMachine();
+            StateMachine.Debug = true;
             SpriteRenderer = GetComponent<SpriteRenderer>();
             Rigidbody2D = GetComponent<Rigidbody2D>();
         }

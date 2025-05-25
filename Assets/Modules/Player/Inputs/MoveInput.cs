@@ -11,12 +11,14 @@ namespace MPlayer
         {
             SetMoveAction action = new SetMoveAction(context.ReadValue<Vector2>());
             InputsStoreSingleton.Instance.Dispatch(action);
+            Debug.Log(context.ReadValue<Vector2>() + " OnPerformed");
         }
 
         protected override void OnCanceled(InputAction.CallbackContext context)
         {
             SetMoveAction action = new SetMoveAction(Vector2.zero);
             InputsStoreSingleton.Instance.Dispatch(action);
+            Debug.Log(context.ReadValue<Vector2>() + " OnCanceled");
         }
     }
 }
