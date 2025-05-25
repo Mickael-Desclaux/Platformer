@@ -108,7 +108,7 @@ MonoBehaviour:
   _groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _groundRadius: 0.1
+  _groundRadius: 0.22
   _playerFeet: {fileID: 153541665199968078}
 --- !u!50 &8990742083629007957
 Rigidbody2D:

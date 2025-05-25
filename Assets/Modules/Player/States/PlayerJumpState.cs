@@ -7,9 +7,10 @@ namespace MPlayer
 {
     public class PlayerJumpState : FSMState<Player>
     {
-        private bool _hasJumped;
         private const float _afterJumpDelay = 0.1f;
         private float _afterJumpTimeElapsed;
+        private const int _maxJumpCount = 2;
+        private int _jumpCount;
         
         public PlayerJumpState(Player context) : base(context)
         {
@@ -18,9 +19,10 @@ namespace MPlayer
 
         public override void Enter()
         {
+            InputsStoreSingleton.Instance.Subscribe<JumpState>(OnJumped);
             Jump();
         }
-
+        
         public override void Execute()
         {
             MoveState moveState = InputsStoreSingleton.Instance.GetState<MoveState>();
@@ -31,12 +33,7 @@ namespace MPlayer
                 return;
             }
             
-            if (Context.IsGrounded && _hasJumped)
-            {
-                _hasJumped = false;
-            }
-            
-            if (Context.IsGrounded && !_hasJumped)
+            if (Context.IsGrounded)
             {
                 Debug.Log(moveState.Direction);
                 
@@ -53,15 +50,23 @@ namespace MPlayer
 
         public override void Exit()
         {
-            
+            InputsStoreSingleton.Instance.Unsubscribe<JumpState>(OnJumped);
+        }
+        
+        private void OnJumped(JumpState obj)
+        {
+            if (_jumpCount < _maxJumpCount)
+            {
+                Jump();
+            };
         }
         
         private void Jump()
         {
             _afterJumpTimeElapsed = 0f;
+            _jumpCount++;
             JumpState state = InputsStoreSingleton.Instance.GetState<JumpState>();
             Context.Rigidbody2D.velocity = new Vector2(Context.Rigidbody2D.velocity.x, state.Force);
-            _hasJumped = true;
         }
     }
 }
