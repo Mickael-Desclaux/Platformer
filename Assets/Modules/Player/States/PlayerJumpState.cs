@@ -28,6 +28,19 @@ namespace MPlayer
             MoveState moveState = InputsStoreSingleton.Instance.GetState<MoveState>();
             _afterJumpTimeElapsed += Time.fixedDeltaTime;
             
+            if (moveState.Direction == Vector2.zero)
+            {
+                return;
+            }
+
+            Vector3 direction = new Vector3(moveState.Direction.x, 0, 0);
+            Context.transform.position += direction * Context.Speed;
+            
+            if (moveState.Direction != Vector2.zero)
+            {
+                Context.Rigidbody2D.velocity = new Vector2(moveState.Direction.x * Context.Speed, Context.Rigidbody2D.velocity.y);
+            }
+            
             if (_afterJumpTimeElapsed < _afterJumpDelay)
             {
                 return;
